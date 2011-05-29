@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.primarr.msg</groupId>
+  <artifactId>msg</artifactId>
+  <version>0.1</version>
+  <packaging>jar</packaging>
+  <name>Primarr Messaging</name>
+  <description>
+  	This project version supports mail segregation, text and html body emails with independent content building abstraction.
+  	i18n is supported to get email subject and content generation.
+  	Only two content generation methods are available, StringBuilder (string only, no i18n) and PostBuilder (i18n support through lang parameter posted to the page that must provide support).
+  	The Attribute replacer is available to replace parameters referenced in the content like #{someParamKey}
+  	The EmailManager can send e-mails synchronously or asynchronously (with a thread).
+  	Supports opt out.
+  	
+  	Future improvements:
+  	Add a Velocity based ContentBuilder with i18n support.
+  	Improve the asynchronous sending code (thread). 
+  </description>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
+  </properties>
+  <build>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>2.0.2</version>
+	      <configuration>
+	        <source>1.5</source>
+	        <target>1.5</target>
+	      </configuration>
+	    </plugin>
+	  </plugins>
+	</build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.4</version>
+      <scope>test</scope>
+    </dependency>
+    
+    
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+     	<groupId>org.apache.commons</groupId>
+	 	<artifactId>commons-email</artifactId>
+		<version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+     	<groupId>commons-logging</groupId>
+	 	<artifactId>commons-logging</artifactId>
+		<version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
+      
+  </dependencies>
+  
+  
+</project>
