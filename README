@@ -14,3 +14,4 @@ Atualmente há suporte para as seguintes operações:
   2.1 Templates parametrizáveis baseados em conteúdo obtido de uma URL
   2.2 Templates de texto puro parametrizáveis com método de próprio de substituição de "placaholders"
 
+A configuração de todo esse sistema de envio é feito via injeção de dependência com suporte ao Spring Framework.
