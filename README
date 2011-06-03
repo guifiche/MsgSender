@@ -1,0 +1,16 @@
+MsgSender é uma biblioteca destinada à construção e envio de mensagens.
+
+Suporte inicial é para envio de e-mails, a ser estendido para qualquer tipo de mensagem como SMS, Twitter, Facebook, etc
+
+Além do envio, essa biblioteca tem como objetivo criar uma maneira fácil para construção de mensagens parametrizadas com suporte a localização (l10n) e internacionalização (i18n).
+
+Atualmente há suporte para as seguintes operações:
+
+1- Envio de mensagens:
+  1.1 Síncrono - método bloqueado até que mensagem for enviada
+  1.2 Assíncrono - mensagem é colocada em uma fila de envio e processada por uma thread
+
+2- Construção de mensagens:
+  2.1 Templates parametrizáveis baseados em conteúdo obtido de uma URL
+  2.2 Templates de texto puro parametrizáveis com método de próprio de substituição de "placaholders"
+
