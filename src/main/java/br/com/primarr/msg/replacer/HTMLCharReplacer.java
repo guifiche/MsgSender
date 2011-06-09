@@ -9,7 +9,8 @@ public class HTMLCharReplacer implements Replacer {
 	private boolean numericalCode = true;
 	private boolean hexCode = false;
 	private boolean useFullHtmlCharacterTable = false;
-	
+	private boolean removeNewLineCharacter = false;
+	private boolean convertNewLineCharacterToHtmlTag = true;
 	
 	public String replace(String text, Map<String, Object> parameters, Locale locale) {
 		return replaceHtmlChars(text);
@@ -38,6 +39,14 @@ public class HTMLCharReplacer implements Replacer {
 	
 	private String replaceHtmlChar(char c)
 	{	
+		if('\n' == c)
+		{
+			if(isRemoveNewLineCharacter())
+				return "";
+			else if(isConvertNewLineCharacterToHtmlTag())
+				return "<br/>";
+		}
+		
 		HtmlCharacter htmlCharacter = getCharacterTable().get(c);
 		
 		if(htmlCharacter != null){
@@ -86,5 +95,34 @@ public class HTMLCharReplacer implements Replacer {
 	public void setUseFullHtmlCharacterTable(boolean useFullHtmlCharacterTable) {
 		this.useFullHtmlCharacterTable = useFullHtmlCharacterTable;
 	}
+	
+	/**
+	 * Default é true
+	 * @return
+	 */
+	public boolean isConvertNewLineCharacterToHtmlTag() {
+		return convertNewLineCharacterToHtmlTag;
+	}
+
+	public void setConvertNewLineCharacterToHtmlTag(
+			boolean convertNewLineCharacterToHtmlTag) {
+		this.convertNewLineCharacterToHtmlTag = convertNewLineCharacterToHtmlTag;
+	}
+
+	/**
+	 * 
+	 * Tem precedência sobre isConvertNewLineCharacterToHtmlTag
+	 * 
+	 * Default é false
+	 * @return
+	 */
+	public boolean isRemoveNewLineCharacter() {
+		return removeNewLineCharacter;
+	}
+
+	public void setRemoveNewLineCharacter(boolean removeNewLineCharacter) {
+		this.removeNewLineCharacter = removeNewLineCharacter;
+	}
+
 
 }

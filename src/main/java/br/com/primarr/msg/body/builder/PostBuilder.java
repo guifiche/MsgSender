@@ -5,19 +5,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.HttpMethod;
-
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.httpclient.NameValuePair;
 
 import br.com.primarr.msg.replacer.ReplacerSupport;
 import br.com.primarr.msg.utils.Is;
@@ -134,6 +135,20 @@ public class PostBuilder extends ReplacerSupport implements ContentBuilder {
         }
 	}
 	
+	private void setupParams(List<NameValuePair> nameValuePairs, Map<String, Object> params)
+	{
+		if(!Is.empty(params))
+	    {
+	    	Iterator<Entry<String, Object>> it = params.entrySet().iterator();
+	    	while(it.hasNext())
+	    	{
+	    		Entry<String, Object> entry = it.next();        		 
+	    		String paramStr = entry.getValue().toString();
+	    		NameValuePair nv = new NameValuePair(entry.getKey(),entry.getValue() == null ? "" : paramStr);
+	    		nameValuePairs.add(nv);
+	    	}
+	    }
+	}
 	
 	/**
 	 * Inserts the {@link Locale} parameter to define internationalization language. If the <code>Locale</code> is null, no parameter will be set.
@@ -157,6 +172,26 @@ public class PostBuilder extends ReplacerSupport implements ContentBuilder {
             	logger().debug(getLocaleParamName()+" "+this.locale);
 			
 			post.addParameter(getLocaleParamName(), this.locale);
+		}
+	}
+	
+	private void setupLocale(List<NameValuePair> nameValuePairs, Locale locale)
+	{
+		if(locale != null)
+		{	//Custom locale specified
+			
+			if(logger().isDebugEnabled())
+            	logger().debug(getLocaleParamName()+" "+locale);
+			
+			nameValuePairs.add(new NameValuePair(getLocaleParamName(), locale.toString()));
+		}
+		else if(this.locale != null)
+		{	//Default locale specified
+			
+			if(logger().isDebugEnabled())
+            	logger().debug(getLocaleParamName()+" "+this.locale);
+			
+			nameValuePairs.add(new NameValuePair(getLocaleParamName(), this.locale));
 		}
 	}
 	
@@ -240,11 +275,32 @@ public class PostBuilder extends ReplacerSupport implements ContentBuilder {
 	public PostMethod preparePostMethod(String url, Map<String, Object> params, Locale locale)
 	{
 		PostMethod post = new PostMethod(url);		
-        //post.setRequestHeader("Content-type", "text/xml; charset=ISO-8859-1");        
-        setupParams(post, this.params);//Default parameters        
-        setupParams(post, params);//Custom parameters        
-        setupLocale(post, locale);//Define locale
-        NameValuePair[] nvp = post.getParameters();
+        post.setRequestHeader("Content-type","application/x-www-form-urlencoded; charset=utf-8");        
+        
+        NameValuePair[] nvp = null;
+        
+//        try 
+//        {	
+        	List<NameValuePair> list = new ArrayList<NameValuePair>();
+        	setupParams(list, this.params);
+        	setupParams(list, params);
+        	setupLocale(list, locale);//Define locale
+        	
+        	nvp = (NameValuePair[])list.toArray();
+        	post.setRequestBody(nvp);
+        	
+//			String content = EncodingUtil.formUrlEncode(nvp, "UTF-8");
+//			StringRequestEntity entity = new StringRequestEntity(content,null, "US-ASCII");
+//			post.setRequestEntity(entity);
+			
+//		} 
+//        catch (UnsupportedEncodingException e) 
+//		{
+//			setupParams(post, this.params);//Default parameters        
+//	        setupParams(post, params);//Custom parameters        
+//	        setupLocale(post, locale);//Define locale
+//	        nvp = post.getParameters();
+//		}
         
         if(logger().isDebugEnabled())
         {
@@ -255,7 +311,6 @@ public class PostBuilder extends ReplacerSupport implements ContentBuilder {
             }
         	logger().debug("Posting to: "+url+" with params: "+nameValuePairs);
         }
-        
         
         return post;
 	}
@@ -287,7 +342,7 @@ public class PostBuilder extends ReplacerSupport implements ContentBuilder {
             {
             	InputStream inputStream =  method.getResponseBodyAsStream();
             	
-	    		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+	    		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
 	    		StringBuffer buffer = new StringBuffer();
 	    		String line = null;
 	    		while ((line = in.readLine()) != null) 

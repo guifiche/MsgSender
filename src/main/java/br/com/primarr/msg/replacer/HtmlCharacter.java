@@ -386,7 +386,7 @@ public class HtmlCharacter
 		table.put('ž',new HtmlCharacter('ž',"","&#382;","&#x17E;"));
 		table.put('Ż',new HtmlCharacter('Ż',"","&#379;","&#x17B;"));
 		table.put('ż',new HtmlCharacter('ż',"","&#380;","&#x17C;"));
-		table.put('\n', new HtmlCharacter('\n', "<br />", "<br />", "<br />"));//gambiarra para poder adicionar linhas HTML
+		//table.put('\n', new HtmlCharacter('\n', "<br />", "<br />", "<br />"));//gambiarra para poder adicionar linhas HTML
 		
 		fullHtmlCharacterMap = table;
 		return table;
@@ -705,7 +705,7 @@ public class HtmlCharacter
 		table.put('ž',new HtmlCharacter('ž',"","&#382;","&#x17E;"));
 		table.put('Ż',new HtmlCharacter('Ż',"","&#379;","&#x17B;"));
 		table.put('ż',new HtmlCharacter('ż',"","&#380;","&#x17C;"));
-		table.put('\n', new HtmlCharacter('\n', "<br />", "<br />", "<br />"));//gambiarra para poder adicionar linhas HTML
+		//table.put('\n', new HtmlCharacter('\n', "<br />", "<br />", "<br />"));//gambiarra para poder adicionar linhas HTML
 		
 		htmlCharacterMap = table;
 		return table;
